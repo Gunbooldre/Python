@@ -1,0 +1,21 @@
+.navbar{
+    font-weight: 800;
+    font-size: 14px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #999;
+	
+}
+.navbar-inverse{
+    background-color:#2d2d2d;
+    border-color: #2d2dad;
+}
+.navbar-brand{
+	font-style: oblique;
+	margin-left: 5px;
+	font-size:20px
+}
+
+a{
+    color:rgb(161, 155, 155)
+}

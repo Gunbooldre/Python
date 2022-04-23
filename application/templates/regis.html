@@ -1,0 +1,79 @@
+<div id="app" v-cloak>
+
+    <div class="actions">
+          <button :class='[{ active: isDisabled("register") }]' 
+               @click.prevent='setComponent("register")'>Signin
+          </button> 
+          <button :class='[{ active: isDisabled("signin") }]' 
+               @click.prevent='setComponent("signin")'>Login
+          </button>
+    </div>
+
+    <transition name='form' mode='out-in'>
+          <keep-alive>
+               <component :feedback='feedback' :is="currentComponent"
+               @register-form='handleForm' @signin-form='handleForm'></component>
+          </keep-alive>
+    </transition>
+
+</div>
+
+<!-- Register Template -->
+<template id="registerTemplate">
+    <form @submit.prevent='onSubmit' ref='form' action="" class='register-form'>
+          <h2>Register</h2>
+          <div class="form-group" >
+               <label for="firstname">Name</label>
+               <input required type="text" v-model.trim='user.firstname' id='firstname' placeholder="Name">
+          </div>
+          <div class="form-group">
+               <label for="lastname">Surname</label>
+               <input required type="text" v-model.trim='user.lastname' id='lastname' placeholder="Surname">
+          </div>
+          <div class="form-group">
+               <label for="email">email adress</label>
+               <input required type="email" v-model.trim='user.email' id='email' placeholder="email adress">
+          </div>
+          <div class="form-group">
+               <label for="password">password</label>
+               <input required type="password" v-model='user.password' placeholder="password" id='password'>
+          </div>
+          <div class="form-group">
+               <label for="passwordcheck">password</label>
+               <input required type="password" v-model='user.passwordChck' placeholder="password" id='passwordcheck'>
+          </div>
+          <input type="submit" :disabled='!isFormValid' value='Register'>
+    </form>
+</template>
+
+<!-- Signin Template -->
+<template id="signinTemplate">
+    <form ref='form' @submit.prevent='handleForm' action="" class='signin-form'>
+          <h2>Sign in</h2>
+          <div class="form-group">
+               <label for="email">email adress</label>
+               <input required v-model='user.email' type="email" id='email' placeholder="Adresse électronique">
+          </div>
+          <div class="form-group">
+               <label for="password">password</label>
+               <input required v-model='user.password' type="password" id='password' placeholder="Mot de passe">
+          </div>
+          <input :disabled='!isFormValid' type="submit" value="Signin">
+    </form>
+</template>
+
+<!-- Feedback Template -->
+<template id="feedbackTemplate">
+    <div class="feedback">
+          <header>
+               <h2>{{ title }}</h2>
+          </header>
+          <div v-if='feedback.type === "register"'>
+              <p>Hello <strong>{{ feedback.data | name }}</strong>.</p>
+              <p> We send a message {{ feedback.data | email }}please check  it.</p>
+          </div>
+          <div v-else>
+               <p>Register error</p>
+          </div>
+    </div>
+</template>

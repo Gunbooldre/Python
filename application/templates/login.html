@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{{url_for('static',filename='login.css')}}">
+    <title>Login page</title>
+</head>
+  	<body>
+		
+
+		<div class="navbar navbar-inverse">
+			<div class="container">
+			  	<div class="navbar-header">
+					<a class="navbar-brand"  href="{{url_for('index')}}">login page</a>
+			  	</div>
+			</div>
+		</div>
+		
+		{%for cat, msg in get_flashed_messages(True) %}
+        <div class = 'flash {{cat}} '>{{msg}}</div>
+        {% endfor %}
+
+		<div class="page">
+	
+    		<form action="" method="post">
+        		<p>
+	    			<label for="username">Username</label>
+	    			<input type="text" name="username">
+				</p>
+				<p>
+	   				<label for="password">Password</label>
+	    			<input type="password" name="password">
+				</p>
+				<p>
+	    			<input type="submit">
+				</p>
+				<p>
+					<label for="password">Remember Me</label>
+					<input type="checkbox" name="rememberMe">
+				</p>
+    		</form>
+
+		</div>
+
+
+		<div id="foot">
+			<p id = 'text'>Some text</p>
+		  </div>
+    
+  	</body>
+</html>
