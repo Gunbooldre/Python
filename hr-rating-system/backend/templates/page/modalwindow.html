@@ -1,0 +1,15 @@
+{% extends 'page/base.html' %}
+{% block content %}
+
+<div style="margin: 100px 0 60px 0;">
+    <h1 class="display-5" style="margin:30px 0 18px 0">
+        Оценка сотрудника
+    </h1>
+
+    {% include 'page/forms.html' with button='Проголосовать'%}
+    <a href="{% url 'listusersView' %}">
+        <button type="button" class="btn btn-secondary">Назад</button>
+    </a>
+</div>
+
+{% endblock content%}

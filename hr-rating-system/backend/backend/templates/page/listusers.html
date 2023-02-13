@@ -1,0 +1,30 @@
+{% extends 'page/base.html' %}
+
+{% block content %}
+
+<h1>Список сотрудников</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ФИО Сотрудник</th>
+      <th>Департамент / Отдел</th>
+      <th>Действие</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in object_list%}
+    <tr>
+      <td>{{ object.name }}</td>
+      <td>{{ object.dep }}</td>
+      <td>
+        <a href="{% url 'choice' pk=object.id %}">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="people{{ person.id }}">Оценить</button>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
