@@ -1,0 +1,90 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Employee Rating System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .active {
+            font-weight: bold;
+        }
+
+        .input_like_label {
+            border: none;
+            padding: 0;
+            background: white;
+            box-shadow: unset;
+            border-bottom: solid 2px #ccc;
+            border-radius: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+{% url '/list/' as url %}
+
+{%if messages%}
+<div id="toastMessageBox">
+    {%for message in messages%}
+    <div class="toast show align-items-center text-white {{message.tags}} border-0" role="alert" aria-live="assertive" aria-atomic="true" style="position:fixed; top:14px; right:14px; z-index:14">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ message }}
+            </div>
+            <button id="closeBtn" type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    <script>
+        const closeBtn = document.getElementById('closeBtn');
+        const toastMessageBox = document.getElementById('toastMessageBox');
+
+        closeBtn.addEventListener('click', () => {
+          toastMessageBox.remove();
+        });
+    </script>
+    {%endfor%}
+</div>
+{%endif%}
+
+
+<div class="container">
+    {% if user.is_authenticated %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:fixed; top:0; left:0; width:100%; border-bottom: solid 1px #ccc;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/list/">
+                <img src="https://vaynhanhtinchap.com/wp-content/uploads/2022/09/Shinhan-Finance.png" height="40"/>
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/list/' %}active{% endif %}" href="/list/">Список сотрудников</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/password/' %}active{% endif %}" href="/password/">Сброс пароля</a>
+                    </li>
+                </ul>
+
+                <form class="d-flex" style="margin:0">
+                    <span class="navbar-text">
+                        <form action="{% url 'logoutuserView' %}" method="POST">
+                            {% csrf_token %}
+                            Здравствуйте {{ user.username }} | <a href="/logout/">Выход</a>
+                        </form>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    {% block content %}
+
+    {% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

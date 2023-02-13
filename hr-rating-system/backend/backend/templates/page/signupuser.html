@@ -1,0 +1,16 @@
+{% extends 'page/base.html' %}
+
+{% block content %}
+
+<h1>Создание свого пароля</h1>
+
+<h2>{{ error }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Установить</button>
+</form>
+
+{% endblock %}
+
