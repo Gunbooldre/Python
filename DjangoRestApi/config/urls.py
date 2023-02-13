@@ -1,4 +1,4 @@
-"""DjangoApi URL Configuration
+"""config URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -14,8 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
+from rest_framework import routers
+from posts.views import *
 
+router  = routers.DefaultRouter()
+router.register(r'Data',BlogViewSet)
+
+print(router.urls)
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/',include(router.urls)),
+    #path('api/v1/',BlogViewSet.as_view({'get':'list'})), #Get Post
+    #path('api/v1/<int:pk>/',BlogViewSet.as_view({'put':'update'})), #Put patch
+    #path('api/v1/<int:pk>/delete',BlogViewSet.as_view({'delete':'delete'})),# get delete
+    
 ]
