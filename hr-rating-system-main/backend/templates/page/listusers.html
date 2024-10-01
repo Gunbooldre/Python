@@ -1,0 +1,115 @@
+{% extends 'page/base.html' %}
+
+{% block content %}
+
+<div style="margin: 100px 0 60px 0;">
+    <div class="row">
+        <div class="col-8">
+            <h1 class="display-5 float-right" style="margin:30px 0 18px 0">Список сотрудников</h1>
+        </div>
+        <div class="col-4 text-end">
+            {% comment %} <a href="{% url 'newemployedview' %}"> {% endcomment %}
+                {% comment %} <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addpersonModal">Добавить сотрудника</button> {% endcomment %}
+            {% comment %} </a>     {% endcomment %}
+
+            {% if user.is_staff %}
+            <a href="/newemployed/">
+              <button type="button" class="btn btn-primary">Добавить сотрудника</button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {%if success_new%}
+    <p style="color:green">Сотрудник добавлен</p>
+    {% endif %}
+
+    {%if update %}
+
+    {%if success_update%}
+    <h3 style="color:green">Сотрудник обновлен</h3>
+    {% endif %}
+
+    <p class="mt-4">Страница редактирования</p>
+
+    <form id="update_data" method = "POST">
+      {% csrf_token %}
+      {{form}}
+    </form>
+
+    <button form="update_data" type="submit" class="btn btn-primary">Обновить</button>
+    <a href="{% url 'listusersView' %}">
+      <button type="button" class="btn btn-secondary">Назад</button>
+    </a>
+
+
+    {% else %}
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Сотрудник</th>
+            <th>Департамент</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list%}
+        <tr>
+            <td><b>{{ object.name }}</b></td>
+            <td>{{ object.dep }}</td>
+            <td>
+                <a href="{% url 'choice' pk=object.id %}">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="people{{ person.id }}">Оценить</button>
+                </a>
+
+                <!-- Button trigger modal -->
+                {% if user.is_staff %}
+                <a href="{% url 'updatepageview' object.id%}">
+                  <button type="button" class="btn btn-secondary">Редактировать</button>
+                </a>
+                <a href="{% url 'deletepageview' object.id%}">
+                  <button type="button" class="btn btn-secondary">Удалить</button>
+                </a>
+                {% endif %}
+
+
+
+                {% comment %} <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Удалить
+                </button> {% endcomment %}
+
+                {% comment %} <form action="{% url 'delete_data' pk=object.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" data-toggle="modal" data-target="people{{ person.id }}" value="Удалить данные">
+                </form> {% endcomment %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{%endif%}
+
+<!-- Modal delete -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Удалить сотрудника</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Вы действительно хотите удалить сотрудника ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Назад</button>
+          <button type="button" class="btn btn-primary">Удалить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

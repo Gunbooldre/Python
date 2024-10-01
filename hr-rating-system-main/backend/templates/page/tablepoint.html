@@ -1,0 +1,34 @@
+{% extends 'page/base.html' %}
+
+{% block content %}
+
+<div style="margin: 100px 0 60px 0;">
+    <h1 class="display-5" style="margin:30px 0 18px 0">
+        Список оценок
+    </h1>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Сотрудник</th>
+            <th>Департамент</th>
+            <th>Отзывчивый</th>
+            <th>Доброжелательный</th>
+            <th>Итоги</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list%}
+        <tr>
+            <td><b>{{ object.name }}</b></td>
+            <td>{{ object.dep }}</td>
+            <td>{{ object.responsiveness }}</td>
+            <td>{{ object.friendliness }}</td>
+            <td>{{ object.responsiveness|add:object.friendliness }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

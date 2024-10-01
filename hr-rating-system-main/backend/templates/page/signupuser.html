@@ -1,0 +1,31 @@
+{% extends 'page/base.html' %}
+
+{% block content %}
+
+{% if user.is_superuser %}
+
+<div style="margin: 100px 0 60px 0;">
+    <h1 class="display-5" style="margin:30px 0 18px 0">
+        Создание свого пароля
+    </h1>
+
+    <h2>{{ error }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Установить</button>
+    </form>
+</div>
+
+{% else %}
+
+<div style="margin: 200px 0 60px 0; text-align:center">
+    <h3>Тебя тут быть не должно!</h3>
+    <h1><br/><b>( ;-D )</b></h1>
+</div>
+
+{% endif %}
+
+{% endblock %}
+

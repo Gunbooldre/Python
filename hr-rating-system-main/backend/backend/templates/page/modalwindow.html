@@ -1,0 +1,6 @@
+{% extends 'page/base.html' %}
+{% block content %}
+<h5 class="modal-title">Вы оцениваете:</h5>
+{% include 'page/forms.html' with button='Отправить'%}
+<a href="{% url 'listusersView' %}"><button type="button" class="btn btn-secondary">Назад</button></a>
+{% endblock content%}
