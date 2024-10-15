@@ -120,27 +120,20 @@
 #
 # hello_world("Dias")
 
-"Iteratore"
-
-class Counter:
-    current: int
-
-    def __init__(self):
-        self.current = 0
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        current = self.current
-        self.current += 1
-        return current
 
 
-c = Counter()
 
-i = iter(c)
-print(next(i))
-print(next(i))
-print(next(i))
-
+# def decorator(func):
+#     def wrapper(*args,**kwargs):
+#         print("in Wparrer")
+#         result = func(*args, **kwargs)
+#         return result
+#     return wrapper
+#
+# @decorator
+# def helloWorld():
+#     print("hello WOrld")
+#
+#
+#
+# helloWorld()
