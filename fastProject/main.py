@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.params import Body
-from pydantic import BaseModel
+
+from schema import Post
 
 app = FastAPI()
 
@@ -16,6 +17,6 @@ async def get_posts():
 
 
 @app.post("/createposts")
-def create_post(payload: dict = Body(...)):
-    print(payload)
-    return {"New post": f"Title {payload['title']}, body {payload['body']}"}
+def create_post(data: Post):
+    print(f"new Post {data}")
+    return {"New post": "New post"}
