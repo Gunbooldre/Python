@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status, HTTPException
 from random import randrange
 from schema import Post
 
@@ -23,7 +23,7 @@ async def get_posts():
     return {"data": my_posts}
 
 
-@app.post("/createposts")
+@app.post("/createposts", status_code=status.HTTP_201_CREATED)
 def create_post(data: Post):
     data = data.dict()
     data['id'] = randrange(0, 100000)
@@ -32,6 +32,10 @@ def create_post(data: Post):
 
 
 @app.get('/posts/{id}')
-def get_post(id: int):
+def get_post(id: int, response: Response):
     data = find_post(int(id))
-    return ({"post_detail": data})
+    if not data:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} was not found")
+        # response.status_code = status.HTTP_404_NOT_FOUND
+        # return {"Message": f"Post with id {id} was not found"}
+    return {"data": data}
