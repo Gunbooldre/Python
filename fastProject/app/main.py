@@ -1,11 +1,21 @@
 from fastapi import FastAPI, Response, status, HTTPException
 from random import randrange
 from schema import Post
-
+import psycopg2
+from psycopg2.extras import RealDictCursor
 app = FastAPI()
 my_posts = [{"title": "titile of post1 ", "body": "Body of posts 1", "id": 1},
             {"title": "titile of post2 ", "body": "Body of posts 2", "id": 2}]
 
+
+try:
+    conn = psycopg2.connect(host='localhost', database='postgres', user='postgres', password='123', port="5433",
+                            cursor_factory=RealDictCursor)
+    cursor = conn.cursor()
+    print("Database connected succesfully")
+except Exception as e:
+    print("Connection to database failed")
+    print(f"Errors {e}")
 
 def find_post(id):
     for i in my_posts:
