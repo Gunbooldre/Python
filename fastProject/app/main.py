@@ -1,11 +1,15 @@
-from fastapi import FastAPI, Response, status, HTTPException
-from random import randrange
+from fastapi import FastAPI, Response, status, HTTPException, Depends
 from schema import Post
+from . import models
+from .database import engine, SessionLocal, get_db
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from sqlalchemy.orm import Session
+import time
+
+models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
-my_posts = [{"title": "titile of post1 ", "body": "Body of posts 1", "id": 1},
-            {"title": "titile of post2 ", "body": "Body of posts 2", "id": 2}]
+
 
 while True:
     try:
@@ -18,20 +22,9 @@ while True:
         print("Connection to database failed")
         print(f"Errors {e}")
 
-def find_post(id):
-    for i in my_posts:
-        if i["id"] == id:
-            return i
-
-
-def find_index(id):
-    for i, p in enumerate(my_posts):
-        if p['id'] == id:
-            return i
-
 
 @app.get("/")
-def root():
+def root(db: Session = Depends(get_db)):
     return {"message": "Hello World"}
 
 
