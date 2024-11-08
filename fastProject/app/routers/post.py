@@ -1,7 +1,6 @@
 from typing import List
 
-from fastapi import (APIRouter, Depends, FastAPI, HTTPException, Response,
-                     status)
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
 from app.schemas import Post, PostCreate, PostUpdate
