@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from . import models
 from .database import engine, get_db
-from .routers import post, users, auth
+from .routers import auth, post, users
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
