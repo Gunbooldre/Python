@@ -1,12 +1,14 @@
+from typing import List
+
 import psycopg2
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from psycopg2.extras import RealDictCursor
 from sqlalchemy.orm import Session
 
-from schema import Post
+from app.schema import PostBase, PostCreate, PostUpdate, Post
 
 from . import models
-from .database import SessionLocal, engine, get_db
+from .database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -32,25 +34,25 @@ def root(db: Session = Depends(get_db)):
 @app.get("/posts")
 async def get_posts(db: Session = Depends(get_db)):
     post = db.query(models.Post).all()
-    return {"data": post}
+    return post
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_post(data: Post, db: Session = Depends(get_db)):
+@app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=Post)
+def create_post(data: PostCreate, db: Session = Depends(get_db)):
     new_post = models.Post(**data.dict())
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
-    return {"data": new_post}
+    return new_post
 
 
-@app.get('/posts/{id}')
+@app.get('/posts/{id}', response_model=List[Post])
 def get_post(id: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(id == models.Post.id).first()
 
     if post is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} was not found")
-    return {"data": post}
+    return post
 
 
 @app.delete('/posts/{id}')
@@ -64,8 +66,9 @@ def delete_post(id: int,  db: Session = Depends(get_db)):
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@app.put("/posts/{id}")
-def update_post(id: int, data: Post, db: Session = Depends(get_db)):
+
+@app.put("/posts/{id}",response_model=Post)
+def update_post(id: int, data: PostUpdate, db: Session = Depends(get_db)):
     updated_post = db.query(models.Post).filter(id == models.Post.id)
 
     if updated_post is None:
@@ -73,4 +76,4 @@ def update_post(id: int, data: Post, db: Session = Depends(get_db)):
 
     updated_post.update(data.dict(), synchronize_session=False)
     db.commit()
-    return {"data": updated_post.first()}
+    return updated_post.first()
