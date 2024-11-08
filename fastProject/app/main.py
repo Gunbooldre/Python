@@ -1,9 +1,10 @@
 
 import psycopg2
-from fastapi import Depends, FastAPI, HTTPException, Response, status
+from fastapi import Depends, FastAPI
 from psycopg2.extras import RealDictCursor
+from sqlalchemy.orm import Session
 
-from . import models, utils
+from . import models
 from .database import engine, get_db
 from .routers import post, users
 
@@ -21,6 +22,11 @@ while True:
     except Exception as e:
         print("Connection to database failed")
         print(f"Errors {e}")
+
+
+@app.get("/")
+def root(db: Session = Depends(get_db)):
+    return {"message": "Hello World"}
 
 
 app.include_router(post.router)

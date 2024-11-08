@@ -11,11 +11,6 @@ from ..database import engine, get_db
 router = APIRouter(prefix="/posts", tags=["Post"])
 
 
-@router.get("/test")
-def root(db: Session = Depends(get_db)):
-    return {"message": "Hello World"}
-
-
 @router.get("/")
 async def get_posts(db: Session = Depends(get_db)):
     post = db.query(models.Post).all()
