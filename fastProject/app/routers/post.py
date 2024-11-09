@@ -12,7 +12,9 @@ router = APIRouter(prefix="/posts", tags=["Post"])
 
 
 @router.get("/")
-async def get_posts(db: Session = Depends(get_db),  user_id: int = Depends(oauth2.get_current_user)):
+async def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    print(current_user.email)
+
     post = db.query(models.Post).all()
     return post
 
@@ -27,7 +29,7 @@ def create_post(data: PostCreate, db: Session = Depends(get_db), user_id: int = 
 
 
 @router.get('/{id}', response_model=List[Post])
-def get_post(id: int, db: Session = Depends(get_db),  user_id: int = Depends(oauth2.get_current_user)):
+def get_post(id: int, db: Session = Depends(get_db),  current_user: int = Depends(oauth2.get_current_user)):
     post = db.query(models.Post).filter(id == models.Post.id).first()
 
     if post is None:
@@ -36,7 +38,7 @@ def get_post(id: int, db: Session = Depends(get_db),  user_id: int = Depends(oau
 
 
 @router.delete('/{id}')
-def delete_post(id: int,  db: Session = Depends(get_db), user_id: int = Depends(oauth2.get_current_user)):
+def delete_post(id: int,  db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     deleted_post = db.query(models.Post).filter(id == models.Post.id)
 
     if deleted_post.first() is None:
@@ -48,7 +50,7 @@ def delete_post(id: int,  db: Session = Depends(get_db), user_id: int = Depends(
 
 
 @router.put("/{id}", response_model=Post)
-def update_post(id: int, data: PostUpdate, db: Session = Depends(get_db),  user_id: int = Depends(oauth2.get_current_user)):
+def update_post(id: int, data: PostUpdate, db: Session = Depends(get_db),  current_user: int = Depends(oauth2.get_current_user)):
     updated_post = db.query(models.Post).filter(id == models.Post.id)
 
     if updated_post is None:
