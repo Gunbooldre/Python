@@ -8,4 +8,4 @@ def hash(password: str) -> str:
 
 
 def verify(plaint_password, hashed_password):
-    return pwd_context.verify(plaint_password,hashed_password)
+    return pwd_context.verify(plaint_password, hashed_password)
