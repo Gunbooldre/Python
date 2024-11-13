@@ -32,7 +32,6 @@ def get_current_user(token: str = Depends(oauth2_schema),db: Session =  Depends(
     token = verify_access_token(token, credentials_exception)
     user = db.query(User).filter(User.id == token.id).first()
     return user
-    # return verify_access_token(token, credentials_exception)
 
 
 def verify_access_token(token: str, credentials_exception):
