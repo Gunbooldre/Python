@@ -2,8 +2,8 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
-
-from app.schemas import Post, PostCreate, PostUpdate
+from sqlalchemy import func
+from app.schemas import Post, PostCreate, PostUpdate, PostOut
 
 from .. import models, oauth2
 from ..database import get_db
@@ -11,7 +11,7 @@ from ..database import get_db
 router = APIRouter(prefix="/posts", tags=["Post"])
 
 
-@router.get("/", response_model=List[Post])
+@router.get("/", status_code=status.HTTP_200_OK, response_model=List[PostOut])
 async def get_posts(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
@@ -19,14 +19,16 @@ async def get_posts(
     skip: int = 0,
     search: Optional[str] = "",
 ):
-    post = (
-        db.query(models.Post)
+    results = (
+        db.query(models.Post, func.count(models.Vote.post_id).label("votes"))
+        .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
+        .group_by(models.Post.id)
         .filter(models.Post.title.contains(search))
         .limit(limit)
         .offset(skip)
         .all()
     )
-    return post
+    return results
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Post)
@@ -42,18 +44,25 @@ def create_post(
     return new_post
 
 
-@router.get("/{id}", response_model=List[Post])
+@router.get("/{id}", response_model=PostOut)
 def get_post(
-    _id: int,
+    id: int,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(oauth2.get_current_user),
 ):
-    get_post = db.query(models.Post).filter(_id == models.Post.id)
-    post = get_post.first()
+    post = (
+        db.query(models.Post, func.count(models.Vote.post_id).label("votes"))
+        .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
+        .group_by(models.Post.id)
+        .filter(id == models.Post.id)
+        .first()
+    )
+    print(post)
+
     if post is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Post with id {_id} was not found",
+            detail=f"Post with id {id} was not found",
         )
 
     if post.owner_id != current_user.id:
