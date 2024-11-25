@@ -57,18 +57,11 @@ def get_post(
         .filter(id == models.Post.id)
         .first()
     )
-    print(post)
 
     if post is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with id {id} was not found",
-        )
-
-    if post.owner_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not Authorized to perform requested action",
         )
 
     return post
@@ -82,12 +75,6 @@ def delete_post(
 ):
     deleted_post = db.query(models.Post).filter(_id == models.Post.id)
     post = deleted_post.first()
-
-    if post is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"post with ID {_id} does not exist ",
-        )
 
     if post.owner_id != current_user.id:
         raise HTTPException(
@@ -116,11 +103,6 @@ def update_post(
             detail=f"post with ID {_id} does not exist ",
         )
 
-    if post.owner_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not Authorized to perform requested action",
-        )
 
     updated_post.update(data.dict(), synchronize_session=False)
     db.commit()
