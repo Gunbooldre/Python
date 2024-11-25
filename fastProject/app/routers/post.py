@@ -1,9 +1,10 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
-from sqlalchemy.orm import Session
 from sqlalchemy import func
-from app.schemas import Post, PostCreate, PostUpdate, PostOut
+from sqlalchemy.orm import Session
+
+from app.schemas import Post, PostCreate, PostOut, PostUpdate
 
 from .. import models, oauth2
 from ..database import get_db
@@ -102,7 +103,6 @@ def update_post(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with ID {_id} does not exist ",
         )
-
 
     updated_post.update(data.dict(), synchronize_session=False)
     db.commit()
