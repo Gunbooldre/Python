@@ -1,6 +1,4 @@
-from typing import List, Optional
-
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.schemas import Vote
@@ -27,7 +25,6 @@ def vote(
     )
     found_vote = vote_query.first()
     if data.dir == 1:
-        print("HI!")
         if found_vote:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
