@@ -19,6 +19,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 # docker exec -it fastproject-api-1 alembic upgrade head
 
+
 def get_db():
     db = SessionLocal()
     try:

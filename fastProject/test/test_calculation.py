@@ -1,5 +1,6 @@
-from calculation import add, subtract, multiply, divide, BanckAccount, InsufficientFunds
 import pytest
+
+from calculation import BanckAccount, InsufficientFunds, add, divide, multiply, subtract
 
 
 @pytest.fixture
@@ -12,11 +13,7 @@ def bank_account():
     return BanckAccount(50)
 
 
-@pytest.mark.parametrize("num1, num2, result", [
-    (3, 2, 5),
-    (7, 1, 8),
-    (12, 4, 16)
-])
+@pytest.mark.parametrize("num1, num2, result", [(3, 2, 5), (7, 1, 8), (12, 4, 16)])
 def test_add(num1, num2, result):
     print("Testing add function")
     assert add(num1, num2) == result
@@ -60,11 +57,9 @@ def test_collect_interest(bank_account):
     assert round(bank_account.balance, 6) == 55
 
 
-@pytest.mark.parametrize("deposit, withdraw, result", [
-    (200, 100, 100),
-    (50, 10, 40),
-    (1200, 400, 800)
-])
+@pytest.mark.parametrize(
+    "deposit, withdraw, result", [(200, 100, 100), (50, 10, 40), (1200, 400, 800)]
+)
 def test_bank_transaction(zero_bank_account, deposit, withdraw, result):
     zero_bank_account.deposit(deposit)
     zero_bank_account.withdraw(withdraw)
