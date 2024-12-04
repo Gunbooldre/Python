@@ -1,4 +1,5 @@
-"""THIS PART JUST FOR TEST"""
+"""THIS FILE JUST FOR TEST NOTHING RELATED TO PROJECT"""
+
 
 def add(a, b):
     return a + b
