@@ -1,0 +1,44 @@
+from fastapi.testclient import TestClient
+import pytest
+from app import models
+from app.main import app
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from app.database import get_db, Base
+
+from app.config import settings
+
+SQLALCHEMY_DATABASE_URL = (
+    f"postgresql://{settings.DATABASE_USERNAME}:"
+    f"{settings.DATABASE_PASSWORD}@"
+    f"{settings.DATABASE_HOSTNAME}:"
+    f"{settings.DATABASE_PORT}/"
+    f"{settings.DATABASE_NAME}_test"
+)
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# docker exec -it fastproject-api-1 alembic upgrade head
+
+
+@pytest.fixture()
+def db():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@pytest.fixture()
+def client(db):
+    def override_get_db():
+        try:
+            yield db
+        finally:
+            db.close()
+
+    app.dependency_overrides[get_db] = override_get_db
+    yield TestClient(app)
