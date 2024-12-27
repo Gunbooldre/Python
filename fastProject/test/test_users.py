@@ -1,17 +1,7 @@
 from app.schemas import *
-from .database import client, db
 from jose import jwt
 import pytest
 from app.config import settings
-
-@pytest.fixture()
-def test_user(client):
-    data = {"email": "Dias3@gmail.com", "password": "123"}
-    res = client.post("/users/", json=data)
-    assert res.status_code == 201
-    new_user = res.json()
-    new_user['password'] = data['password']
-    return new_user
 
 
 def test_root(client):
@@ -33,3 +23,12 @@ def test_login_user(client, test_user):
     assert id == test_user['id']
     assert login_res.token_type == "Bearer"
     assert res.status_code == 200
+
+@pytest.mark.parametrize("email, password, status_code", [
+    ("123@gmail.com", "123", 403),
+    ("124@gmail.com", "124", 403),
+])
+def test_incorrect_login(test_user, client, email, password, status_code):
+    res = client.post("/login", data={"username": email, "password": password})
+    assert res.status_code == status_code
+    assert res.json().get('detail') == 'Email is not found'
