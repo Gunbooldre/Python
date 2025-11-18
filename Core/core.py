@@ -82,3 +82,25 @@
 # make_sound(d)
 # make_sound(c)
 # make_sound(Cow)
+
+
+class Person:
+    # __slots__ = ['name','age']
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return f"Hello, world my little friend {self.name}"
+
+    def say_hi(self):
+        print(f"Hello {self.name}")
+
+
+a = Person(name="Dias")
+print(a)
+
+
+# a.name = 'Aza'
+# a.age = 16
+# a.surname = "Akzan"
+# print(a.name, a.age, a.surname)

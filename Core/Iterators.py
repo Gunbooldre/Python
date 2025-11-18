@@ -1,29 +1,30 @@
 "Iteratore"
-#
-# class Counter:
-#     current: int
-#
-#     def __init__(self):
-#         self.current = 0
-#
-#     def __iter__(self):
-#         return self
-#
-#     def __next__(self):
-#         current = self.current
-#         self.current += 1
-#         return current
-#
-#
-# c = Counter()
-#
-# i = iter(c)
-# print(next(i))
-# print(next(i))
-# print(next(i))
+
+class Counter:
+    current: int
+
+    def __init__(self):
+        self.current = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        current = self.current
+        self.current += 1
+        return current
+
+
+c = Counter()
+
+i = iter(c)
+print(next(i))
+print(next(i))
+print(next(i))
 
 "Generator"
 import sys
+
 
 def fibonacci(n):
     prev, cur = 0, 1
@@ -33,8 +34,8 @@ def fibonacci(n):
         prev, cur = cur, prev + cur
     return result
 
-fib_sequence = fibonacci(10000)  # Генерируем 1000 чисел
-print(f"Size of Fibonacci sequence (1000 elements): {sys.getsizeof(fib_sequence)} bytes")
+# fib_sequence = fibonacci(1000000)  # Генерируем 1000 чисел
+# print(f"Size of Fibonacci sequence (1000000 elements): {sys.getsizeof(fib_sequence)} bytes")
 
 
 class GeneratoreFibocci:
@@ -76,8 +77,8 @@ class IteratoreFibonacci:
         return value
 
 
-i = IteratoreFibonacci(10000)  # Здесь передаем 10000 итераций
-for num in range(10000):  # Первые 10 чисел
+i = IteratoreFibonacci(1000000)  # Здесь передаем 10000 итераций
+for num in range(1000000):  # Первые 10 чисел
     next(i)
 
 print(f"Size of Fibonacci Iteratore object: {sys.getsizeof(i)} bytes")
