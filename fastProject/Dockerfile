@@ -1,13 +1,16 @@
-FROM python:3.10-slim
-
+FROM python:3.14-slim
 
 WORKDIR /usr/src/app
 
-RUN pip install --upgrade pip
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
 
-COPY requirements.txt ./
+RUN pip install --upgrade pip && pip install poetry
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml poetry.lock* ./
+
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --no-root
 
 COPY . .
 
