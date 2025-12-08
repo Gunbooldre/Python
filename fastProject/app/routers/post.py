@@ -4,10 +4,11 @@ from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from app.schemas import Post, PostCreate, PostOut, PostUpdate
+from app.schemas import Post, PostCreate, PostOut, PostUpdate, PaginationParams
 
 from .. import models, oauth2
 from ..database import get_db
+from ..utils import pagination_dep
 
 router = APIRouter(prefix="/posts", tags=["Post"])
 
@@ -16,8 +17,7 @@ router = APIRouter(prefix="/posts", tags=["Post"])
 async def get_posts(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
-    limit: int = 10,
-    skip: int = 0,
+    pagination: PaginationParams = Depends(pagination_dep),
     search: Optional[str] = "",
 ):
     results = (
@@ -25,8 +25,8 @@ async def get_posts(
         .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
         .group_by(models.Post.id)
         .filter(models.Post.title.contains(search))
-        .limit(limit)
-        .offset(skip)
+        .limit(pagination.limit)
+        .offset(pagination.skip)
         .all()
     )
     return results

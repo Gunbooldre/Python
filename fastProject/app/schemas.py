@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, conint
+from pydantic import BaseModel, EmailStr, conint, Field
 
 
 class UsersOut(BaseModel):
@@ -61,3 +61,8 @@ class TokenData(BaseModel):
 class Vote(BaseModel):
     post_id: int
     dir: conint(le=1)
+
+
+class PaginationParams(BaseModel):
+    limit: int = Field(5, ge=0, le=100, description="Кол-во элементов на странице")
+    skip: int = Field(5, ge=0, description="Сокращения для пагинации")
