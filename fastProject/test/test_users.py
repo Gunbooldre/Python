@@ -1,4 +1,4 @@
-from app.schemas import *
+from app.schemas.schemas import *
 from jose import jwt
 import pytest
 from app.config import settings

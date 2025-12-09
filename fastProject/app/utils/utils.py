@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
 from fastapi import Query
-from app.schemas import PaginationParams
+from app.schemas.schemas import PaginationParams
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
