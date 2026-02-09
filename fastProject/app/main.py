@@ -1,9 +1,10 @@
+import asyncio
 import time
 from typing import Callable
 
 from fastapi import FastAPI, Response, Request
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.utils.utils import *
 from app.routers import auth, post, users, vote
 app = FastAPI()
 origins = ["*"]
@@ -35,6 +36,6 @@ async def my_middleware(request: Request, call_next: Callable) -> Response:
 
 
 @app.get("/")
-def root():
-    time.sleep(2)
+async def root():
+    asyncio.create_task(async_task())
     return {"message": "Hello World my friend"}

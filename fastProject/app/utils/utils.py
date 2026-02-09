@@ -1,3 +1,6 @@
+import asyncio
+import time
+
 from passlib.context import CryptContext
 from fastapi import Query
 from app.schemas.schemas import PaginationParams
@@ -18,3 +21,15 @@ def pagination_dep(
     skip: int = Query(0, ge=0, description="Смещение для пагинации"),
 ) -> PaginationParams:
     return PaginationParams(limit=limit, skip=skip)
+
+
+def sync_task():
+    time.sleep(3)
+    print("sync_task is done")
+
+
+async def async_task():
+    await asyncio.sleep(3)
+    print("sync_task_async is done")
+
+
