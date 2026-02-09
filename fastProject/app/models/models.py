@@ -40,3 +40,12 @@ class Vote(Base):
     post_id = Column(
         Integer, ForeignKey("posts.id", ondelete="CASCADE"), primary_key=True
     )
+
+
+class Task(Base):
+    __tablename__ = "tasks"
+    resposible_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, unique=True, index=True)
+    description = Column(String, index=True)
+    completed = Column(Boolean, default=False)

@@ -29,3 +29,9 @@ def get_user(id: int, db: Session = Depends(get_db)):
             detail=f"User with this {id} is not found",
         )
     return user
+
+
+@router.get("/", response_model=list[UsersOut])
+def get_users(db: Session = Depends(get_db)):
+    users = db.query(models.User).all()
+    return users

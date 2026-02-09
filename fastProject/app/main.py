@@ -5,7 +5,7 @@ from typing import Callable
 from fastapi import FastAPI, Response, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.utils.utils import *
-from app.routers import auth, post, users, vote
+from app.routers import auth, post, users, vote, tasks
 app = FastAPI()
 origins = ["*"]
 app.add_middleware(
@@ -20,6 +20,7 @@ app.include_router(post.router)
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(vote.router)
+app.include_router(tasks.router)
 
 
 @app.middleware('http')
