@@ -2,8 +2,7 @@ import asyncio
 import time
 from functools import wraps, lru_cache
 from typing import Callable, Coroutine
-
-from django.template.defaultfilters import yesno
+from contextlib import contextmanager
 from passlib.context import CryptContext
 from fastapi import Query
 from app.schemas.schemas import PaginationParams
@@ -97,9 +96,6 @@ async def my_async_func():
 def my_func_lru(x: int):
     time.sleep(5)
     return x * 2
-
-
-from contextlib import contextmanager
 
 
 def ctx_manager():
