@@ -108,11 +108,22 @@ with ctx_manager as m:
     print("123")
 
 
-def log_func(func: Callable):
+def wrapper(func: Callable):
+    cache = {}
+
     @wraps(func)
-    def wrapper(*args, **kwargs):
-        print(f"Start {func.__name__} args: {args} kwargs: {kwargs}")
+    def wrapper_inner(*args, **kwargs):
+        key = (args, tuple(sorted(kwargs.items())))
+        if key in cache:
+            print("Из кэша!")
+            return cache[key]
+
         res = func(*args, **kwargs)
-        print(f"End {func.__name__} args: {args} kwargs: {kwargs}")
+        cache[key] = res
         return res
-    return wrapper
+    return wrapper_inner
+
+
+@wrapper
+def my_func_wrapper():
+    return 5*5
