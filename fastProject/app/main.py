@@ -40,3 +40,9 @@ async def my_middleware(request: Request, call_next: Callable) -> Response:
 async def root():
     asyncio.create_task(async_task())
     return {"message": "Hello World my friend"}
+
+
+@app.get("healthz")
+async def healthz():
+    return {"status": "ok"}
+

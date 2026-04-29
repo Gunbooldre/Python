@@ -98,14 +98,16 @@ def my_func_lru(x: int):
     return x * 2
 
 
+@contextmanager
 def ctx_manager():
     print("hello")
     yield
     print("end")
 
 
-with ctx_manager as m:
-    print("123")
+if __name__ == "__main__":
+    with ctx_manager() as m:
+        print("123")
 
 
 def wrapper(func: Callable):
