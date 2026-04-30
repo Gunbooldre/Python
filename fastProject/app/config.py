@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     ACCESS_KEY: str
     SECRET_KEY_S3: str
     ENDPOINT_URL: str
+    PUBLIC_ENDPOINT_URL: str | None = None
     BUCKET_NAME: str
 
     class Config:

@@ -13,6 +13,7 @@ services:
     environment:
       - DATABASE_HOSTNAME=postgres
       - ENDPOINT_URL=http://minio:9000
+      - PUBLIC_ENDPOINT_URL=http://localhost:9000
       - ACCESS_KEY=minioadmin
       - SECRET_KEY_S3=minioadmin
       - BUCKET_NAME=test
