@@ -84,6 +84,7 @@ asyncpg = "^0.31.0"
 greenlet = "^3.3.1"
 rabbitmq = "^0.2.0"
 pika = "^1.3.2"
+aiobotocore = "^3.5.0"
 
 
 [build-system]
