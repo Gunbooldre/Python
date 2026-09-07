@@ -50,5 +50,6 @@ def main():
     t = input()
     print(temp.get(t, ""))
 
+
 if __name__ == '__main__':
     main()

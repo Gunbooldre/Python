@@ -3,7 +3,7 @@ from pika import ConnectionParameters, BlockingConnection
 connection_params = ConnectionParameters(host="localhost", port=5672)
 
 
-def main():
+def main() -> None:
     with BlockingConnection(connection_params) as connection:
         with connection.channel() as channel:
             channel.queue_declare(queue="messages")
@@ -12,4 +12,3 @@ def main():
 
 
 main()
-print("DONE")

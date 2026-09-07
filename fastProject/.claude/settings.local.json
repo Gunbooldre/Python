@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker ps:)",
+      "Read(//Users/diasmuratbayev/yandex-cloud/bin/**)",
+      "Bash(kubectl config *)",
+      "Bash(docker info *)",
+      "Bash(docker run *)",
+      "Bash(docker version *)",
+      "Bash(sw_vers)",
+      "Bash(brew list *)",
+      "Bash(brew info *)",
+      "Bash(awk '{print $2, $11, $12}')",
+      "Bash(defaults read *)",
+      "Bash(minikube start *)",
+      "Bash(tee /tmp/minikube-start.log)",
+      "Bash(pkill -f 'for i in.*seq 1 600')",
+      "Bash(minikube delete *)",
+      "Bash(docker rmi *)",
+      "Bash(kubectl get *)",
+      "Bash(kubectl logs *)"
+    ]
+  }
+}

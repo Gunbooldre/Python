@@ -43,7 +43,7 @@ async def root():
     return {"message": "Hello World my friend"}
 
 
-@app.get("healthz")
+@app.get("/healthz")
 async def healthz():
     return {"status": "ok"}
 
